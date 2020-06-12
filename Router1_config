@@ -1,0 +1,42 @@
+router 1
+
+
+conf t
+
+class-map voice 
+match protocol rtp 
+exit
+
+class-match http
+match protocol http
+exit
+
+class-map icmp
+match protocol icmp
+exit
+
+conf t
+policy-map mark
+class voice
+set ip dscp ef
+priority 100
+exit
+
+conf t 
+policy-map mark
+class http
+set ip dscp af31
+bandwidth 50
+exit
+
+conf t
+policy-map mark 
+class icmp
+set ip dscp af11
+banwidth 25
+exit
+
+conf t
+int s0/1/0
+service-policy output mark 
+end

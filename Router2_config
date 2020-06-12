@@ -1,0 +1,29 @@
+ROUTER 2
+conf t 
+class-map voice
+match ip dscp ef
+
+class-map http
+match ip dscp af31
+
+class-map icmp 
+match ip dscp af11
+end
+
+
+conf t 
+policy-map remark
+class voice
+set precedence critical
+class http
+set precedence 3
+class icmp
+set precedence 0
+
+
+# bind the policy map
+
+conf t
+int s0/2/0
+service-policy input remark
+exit
