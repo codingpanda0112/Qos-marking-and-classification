@@ -8,6 +8,13 @@ match ip dscp af31
 
 class-map icmp 
 match ip dscp af11
+
+class-map ftp
+match ip dscp af22
+
+class-map  smtp 
+match ip dscp af21
+
 end
 
 
@@ -19,6 +26,12 @@ class http
 set precedence 3
 class icmp
 set precedence 0
+class ftp 
+set precedence 1
+class smtp 
+set precedence 1
+end 
+
 
 
 # bind the policy map

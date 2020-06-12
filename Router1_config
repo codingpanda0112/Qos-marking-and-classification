@@ -7,13 +7,23 @@ class-map voice
 match protocol rtp 
 exit
 
-class-match http
+class-map http
 match protocol http
 exit
 
 class-map icmp
 match protocol icmp
+exit 
+
+class-map ftp
+match protocol ftp
 exit
+
+class-map smtp
+match protocol smtp 
+exit 
+end 
+
 
 conf t
 policy-map mark
@@ -26,15 +36,30 @@ conf t
 policy-map mark
 class http
 set ip dscp af31
-bandwidth 50
+bandwidth percent 25
 exit
 
 conf t
 policy-map mark 
 class icmp
 set ip dscp af11
-banwidth 25
+bandwidth percent 10
 exit
+
+conf t
+policy-map mark 
+class ftp
+set ip dscp af22
+bandwidth percent 15
+exit
+
+conf t 
+policy-map mark 
+class smtp
+set ip dscp af21
+bandwidth percent 15
+exit
+end 
 
 conf t
 int s0/1/0
